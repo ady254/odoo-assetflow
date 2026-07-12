@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Plus, Search, Check, History } from 'lucide-react'
 import api, { errMsg } from '../api'
 import { useAuth, isManager } from '../auth'
 import { Badge, Modal, Field, Empty } from '../components/ui'
@@ -37,8 +38,11 @@ export default function Assets() {
     <div>
       <div className="spread" style={{ marginBottom: 16 }}>
         <div className="row">
-          <input placeholder="Search tag / name / serial…" value={q}
-            onChange={e => setQ(e.target.value)} style={{ width: 240 }} />
+          <div className="input-icon" style={{ width: 240 }}>
+            <Search size={16} />
+            <input placeholder="Search tag / name / serial…" value={q}
+              onChange={e => setQ(e.target.value)} />
+          </div>
           <select value={status} onChange={e => setStatus(e.target.value)} style={{ width: 170 }}>
             <option value="">All statuses</option>
             {STATUSES.map(s => <option key={s} value={s}>{s.replace('_', ' ')}</option>)}
@@ -48,7 +52,7 @@ export default function Assets() {
             {cats.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
         </div>
-        {isManager(user) && <button className="btn" onClick={() => setShowForm(true)}>+ Register Asset</button>}
+        {isManager(user) && <button className="btn" onClick={() => setShowForm(true)}><Plus size={16} /> Register Asset</button>}
       </div>
 
       <div className="card" style={{ padding: 0 }}>
@@ -67,8 +71,8 @@ export default function Assets() {
                     <td><Badge value={a.status} /></td>
                     <td>{a.condition}</td>
                     <td>{a.location || '—'}</td>
-                    <td>{a.is_shared_bookable ? '✅' : '—'}</td>
-                    <td><button className="btn ghost sm" onClick={() => openHistory(a.id)}>History</button></td>
+                    <td>{a.is_shared_bookable ? <Check size={16} color="var(--green)" /> : <span className="muted">—</span>}</td>
+                    <td><button className="btn ghost sm" onClick={() => openHistory(a.id)}><History size={14} /> History</button></td>
                   </tr>
                 ))}
               </tbody>

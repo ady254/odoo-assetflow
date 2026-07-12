@@ -1,15 +1,20 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import {
+  PackageCheck, UserCheck, Wrench, CalendarDays, ArrowLeftRight,
+  CalendarClock, AlertTriangle, Plus, CalendarPlus, Clock,
+} from 'lucide-react'
 import api from '../api'
-import { Empty } from '../components/ui'
+import { Empty, stagger, fadeUp } from '../components/ui'
 
 const CARDS = [
-  { key: 'assets_available', label: 'Assets Available', cls: 'green' },
-  { key: 'assets_allocated', label: 'Assets Allocated', cls: '' },
-  { key: 'maintenance_today', label: 'Maintenance Today', cls: '' },
-  { key: 'active_bookings', label: 'Active Bookings', cls: '' },
-  { key: 'pending_transfers', label: 'Pending Transfers', cls: '' },
-  { key: 'upcoming_returns', label: 'Upcoming Returns', cls: '' },
+  { key: 'assets_available', label: 'Assets Available', Icon: PackageCheck, ib: 'ib-green' },
+  { key: 'assets_allocated', label: 'Assets Allocated', Icon: UserCheck, ib: 'ib-blue' },
+  { key: 'maintenance_today', label: 'Maintenance Today', Icon: Wrench, ib: 'ib-amber' },
+  { key: 'active_bookings', label: 'Active Bookings', Icon: CalendarDays, ib: 'ib-purple' },
+  { key: 'pending_transfers', label: 'Pending Transfers', Icon: ArrowLeftRight, ib: 'ib-blue' },
+  { key: 'upcoming_returns', label: 'Upcoming Returns', Icon: CalendarClock, ib: 'ib-purple' },
 ]
 
 export default function Dashboard() {
@@ -28,28 +33,34 @@ export default function Dashboard() {
 
   return (
     <div>
-      <div className="quick-actions" style={{ marginBottom: 20 }}>
-        <button className="btn" onClick={() => nav('/assets')}>+ Register Asset</button>
-        <button className="btn secondary" onClick={() => nav('/bookings')}>📅 Book Resource</button>
-        <button className="btn secondary" onClick={() => nav('/maintenance')}>🔧 Raise Maintenance</button>
+      <div className="quick-actions" style={{ marginBottom: 22 }}>
+        <button className="btn" onClick={() => nav('/assets')}><Plus size={16} /> Register Asset</button>
+        <button className="btn secondary" onClick={() => nav('/bookings')}><CalendarPlus size={16} /> Book Resource</button>
+        <button className="btn secondary" onClick={() => nav('/maintenance')}><Wrench size={16} /> Raise Maintenance</button>
       </div>
 
-      <div className="grid kpi-grid">
+      <motion.div className="grid kpi-grid" variants={stagger} initial="hidden" animate="show">
         {CARDS.map(c => (
-          <div className="kpi" key={c.key}>
+          <motion.div className="kpi" key={c.key} variants={fadeUp}>
+            <div className="kpi-top">
+              <div className={`icon-badge ${c.ib}`}><c.Icon size={20} /></div>
+            </div>
             <div className="label">{c.label}</div>
-            <div className={`value ${c.cls}`}>{kpis ? kpis[c.key] : '—'}</div>
-          </div>
+            <div className="value">{kpis ? kpis[c.key] : '—'}</div>
+          </motion.div>
         ))}
-        <div className="kpi warn">
+        <motion.div className="kpi warn" variants={fadeUp}>
+          <div className="kpi-top">
+            <div className="icon-badge ib-red"><AlertTriangle size={20} /></div>
+          </div>
           <div className="label">Overdue Returns</div>
           <div className="value red">{kpis ? kpis.overdue_returns : '—'}</div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
-      <div className="section-title">Overdue Returns</div>
-      <div className="card" style={{ padding: 0 }}>
-        {overdue.length === 0 ? <Empty text="No overdue returns 🎉" /> : (
+      <div className="section-title"><Clock size={17} /> Overdue Returns</div>
+      <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+        {overdue.length === 0 ? <Empty text="No overdue returns — everything is on track" /> : (
           <div className="table-wrap">
             <table>
               <thead>
@@ -62,7 +73,7 @@ export default function Dashboard() {
                     <td>{o.asset_name}</td>
                     <td>{o.employee_name || '—'}</td>
                     <td>{new Date(o.expected_return_date).toLocaleDateString()}</td>
-                    <td><span className="badge overdue">{o.days_overdue}d</span></td>
+                    <td><span className="badge overdue">{o.days_overdue}d overdue</span></td>
                   </tr>
                 ))}
               </tbody>

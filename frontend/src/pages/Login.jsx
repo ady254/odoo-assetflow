@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { Mail, Lock, User, LogIn, UserPlus, AlertCircle, ArrowRight } from 'lucide-react'
 import { useAuth } from '../auth'
 import { errMsg } from '../api'
 
@@ -36,28 +38,39 @@ export default function Login() {
           <div className="logo">AF</div>
           <h1>AssetFlow</h1>
         </div>
-        <p className="auth-sub">Enterprise Asset & Resource Management</p>
+        <p className="auth-sub">Enterprise Asset &amp; Resource Management</p>
 
-        {err && <div className="err">{err}</div>}
+        {err && <div className="err"><AlertCircle size={16} style={{ flexShrink: 0, marginTop: 1 }} /> {err}</div>}
 
         <form onSubmit={submit}>
           {mode === 'signup' && (
             <label className="fld">
               <span>Full name</span>
-              <input value={name} onChange={e => setName(e.target.value)} required placeholder="Jane Doe" />
+              <div className="input-icon">
+                <User size={16} />
+                <input value={name} onChange={e => setName(e.target.value)} required placeholder="Jane Doe" />
+              </div>
             </label>
           )}
           <label className="fld">
             <span>Email</span>
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="you@company.com" />
+            <div className="input-icon">
+              <Mail size={16} />
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="you@company.com" />
+            </div>
           </label>
           <label className="fld">
             <span>Password</span>
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="••••••••" />
+            <div className="input-icon">
+              <Lock size={16} />
+              <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="••••••••" />
+            </div>
           </label>
-          <button className="btn" style={{ width: '100%', marginTop: 6 }} disabled={busy}>
+          <motion.button className="btn" style={{ width: '100%', marginTop: 6, justifyContent: 'center', padding: '11px' }}
+            disabled={busy} whileTap={{ scale: 0.98 }}>
+            {mode === 'login' ? <LogIn size={17} /> : <UserPlus size={17} />}
             {busy ? 'Please wait…' : mode === 'login' ? 'Log in' : 'Create account'}
-          </button>
+          </motion.button>
         </form>
 
         {mode === 'signup' && (
@@ -68,15 +81,15 @@ export default function Login() {
 
         <p style={{ textAlign: 'center', marginTop: 18 }}>
           {mode === 'login' ? (
-            <>New here? <a style={{ color: 'var(--purple)', fontWeight: 600 }} onClick={() => { setMode('signup'); setErr('') }}>Create an account</a></>
+            <>New here? <a style={{ color: 'var(--purple)', fontWeight: 600, cursor: 'pointer' }} onClick={() => { setMode('signup'); setErr('') }}>Create an account <ArrowRight size={13} style={{ verticalAlign: 'middle' }} /></a></>
           ) : (
-            <>Have an account? <a style={{ color: 'var(--purple)', fontWeight: 600 }} onClick={() => { setMode('login'); setErr('') }}>Log in</a></>
+            <>Have an account? <a style={{ color: 'var(--purple)', fontWeight: 600, cursor: 'pointer' }} onClick={() => { setMode('login'); setErr('') }}>Log in</a></>
           )}
         </p>
 
-        <div className="card" style={{ marginTop: 18, background: '#faf9fb', fontSize: 12 }}>
+        <div className="card" style={{ marginTop: 18, background: 'var(--purple-50)', fontSize: 12, border: 'none' }}>
           <b>Demo logins</b>
-          <div className="muted" style={{ marginTop: 6, lineHeight: 1.7 }}>
+          <div className="muted" style={{ marginTop: 6, lineHeight: 1.8 }}>
             admin@assetflow.com / admin123<br />
             manager@assetflow.com / manager123<br />
             priya@assetflow.com / priya123

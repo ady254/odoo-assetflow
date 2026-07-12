@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './auth'
 import Layout from './components/Layout'
+import { Spinner } from './components/ui'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Assets from './pages/Assets'
@@ -14,7 +15,7 @@ import Organization from './pages/Organization'
 
 function Protected({ children }) {
   const { user, loading } = useAuth()
-  if (loading) return <div className="empty">Loading…</div>
+  if (loading) return <Spinner />
   if (!user) return <Navigate to="/login" replace />
   return <Layout>{children}</Layout>
 }

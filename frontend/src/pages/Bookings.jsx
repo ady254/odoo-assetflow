@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { CalendarPlus, XCircle } from 'lucide-react'
 import api, { errMsg } from '../api'
 import { Badge, Modal, Field, Empty } from '../components/ui'
 
@@ -38,7 +39,7 @@ export default function Bookings() {
             {resources.map(r => <option key={r.id} value={r.id}>{r.asset_tag} — {r.name}</option>)}
           </select>
         </div>
-        <button className="btn" disabled={!selected} onClick={() => setShowForm(true)}>+ New Booking</button>
+        <button className="btn" disabled={!selected} onClick={() => setShowForm(true)}><CalendarPlus size={16} /> New Booking</button>
       </div>
 
       <div className="card" style={{ padding: 0 }}>
@@ -53,7 +54,7 @@ export default function Bookings() {
                 <td>{new Date(b.end_time).toLocaleString()}</td>
                 <td><Badge value={b.status} /></td>
                 <td>{b.status !== 'cancelled' && b.status !== 'completed' &&
-                  <button className="btn ghost sm" onClick={() => cancel(b.id)}>Cancel</button>}</td>
+                  <button className="btn ghost sm" onClick={() => cancel(b.id)}><XCircle size={14} /> Cancel</button>}</td>
               </tr>
             ))}</tbody>
           </table></div>

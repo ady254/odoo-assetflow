@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Plus } from 'lucide-react'
 import api, { errMsg } from '../api'
 import { useAuth, isManager } from '../auth'
 import { Badge, Modal, Field, Empty } from '../components/ui'
@@ -25,7 +26,7 @@ export default function Maintenance() {
     <div>
       <div className="spread" style={{ marginBottom: 16 }}>
         <p className="muted" style={{ margin: 0 }}>Pending → Approved → Technician Assigned → In Progress → Resolved</p>
-        <button className="btn" onClick={() => setShowForm(true)}>+ Raise Request</button>
+        <button className="btn" onClick={() => setShowForm(true)}><Plus size={16} /> Raise Request</button>
       </div>
 
       <div className="card" style={{ padding: 0 }}>

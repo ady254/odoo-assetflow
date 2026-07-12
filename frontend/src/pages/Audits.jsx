@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Plus, Check, FolderOpen } from 'lucide-react'
 import api, { errMsg } from '../api'
 import { useAuth, isAdmin } from '../auth'
 import { Badge, Modal, Field, Empty } from '../components/ui'
@@ -18,7 +19,7 @@ export default function Audits() {
     <div>
       <div className="spread" style={{ marginBottom: 16 }}>
         <p className="muted" style={{ margin: 0 }}>Structured verification cycles with auto-generated discrepancy reports.</p>
-        {isAdmin(user) && <button className="btn" onClick={() => setShowForm(true)}>+ New Audit Cycle</button>}
+        {isAdmin(user) && <button className="btn" onClick={() => setShowForm(true)}><Plus size={16} /> New Audit Cycle</button>}
       </div>
 
       <div className="card" style={{ padding: 0 }}>
@@ -31,7 +32,7 @@ export default function Audits() {
                 <td>{c.scope_location || (c.scope_department_id ? `Dept #${c.scope_department_id}` : 'All assets')}</td>
                 <td>{c.checked_items}/{c.total_items} checked</td>
                 <td><Badge value={c.status} /></td>
-                <td><button className="btn ghost sm" onClick={() => openCycle(c.id)}>Open</button></td>
+                <td><button className="btn ghost sm" onClick={() => openCycle(c.id)}><FolderOpen size={14} /> Open</button></td>
               </tr>
             ))}</tbody>
           </table></div>
@@ -112,7 +113,7 @@ function CycleModal({ cycle, isAdmin, onClose, onChange, onClosed }) {
             <td>{it.result ? <Badge value={it.result} /> : <span className="muted">unchecked</span>}</td>
             {cycle.status === 'open' && (
               <td><div className="row">
-                <button className="btn green sm" onClick={() => mark(it.asset_id, 'verified')}>✔</button>
+                <button className="btn green sm" onClick={() => mark(it.asset_id, 'verified')}><Check size={14} /> Verify</button>
                 <button className="btn sm" style={{ background: '#d97706' }} onClick={() => mark(it.asset_id, 'damaged')}>Damaged</button>
                 <button className="btn red sm" onClick={() => mark(it.asset_id, 'missing')}>Missing</button>
               </div></td>

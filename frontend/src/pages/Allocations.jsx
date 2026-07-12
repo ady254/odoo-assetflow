@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Plus, Check, X, RotateCcw, ArrowLeftRight } from 'lucide-react'
 import api, { errMsg } from '../api'
 import { useAuth, canApprove } from '../auth'
 import { Badge, Modal, Field, Empty } from '../components/ui'
@@ -46,7 +47,7 @@ export default function Allocations() {
           <div className={`tab ${tab === 'transfers' ? 'active' : ''}`} onClick={() => setTab('transfers')}>Transfer Requests</div>
         </div>
         {canApprove(user) && tab !== 'transfers' &&
-          <button className="btn" onClick={() => setShowAlloc(true)}>+ Allocate Asset</button>}
+          <button className="btn" onClick={() => setShowAlloc(true)}><Plus size={16} /> Allocate Asset</button>}
       </div>
 
       {tab !== 'transfers' && (
@@ -62,7 +63,7 @@ export default function Allocations() {
                   <td>{new Date(a.allocated_at).toLocaleDateString()}</td>
                   <td>{a.expected_return_date ? new Date(a.expected_return_date).toLocaleDateString() : '—'} {a.overdue && <span className="badge overdue">overdue</span>}</td>
                   <td><Badge value={a.status} /></td>
-                  <td>{a.status === 'active' && <button className="btn ghost sm" onClick={() => doReturn(a.asset_id)}>Return</button>}</td>
+                  <td>{a.status === 'active' && <button className="btn ghost sm" onClick={() => doReturn(a.asset_id)}><RotateCcw size={14} /> Return</button>}</td>
                 </tr>
               ))}</tbody>
             </table></div>
@@ -83,8 +84,8 @@ export default function Allocations() {
                   <td><Badge value={t.status} /></td>
                   <td>{t.status === 'requested' && canApprove(user) && (
                     <div className="row">
-                      <button className="btn green sm" onClick={() => approveTransfer(t.id)}>Approve</button>
-                      <button className="btn red sm" onClick={() => rejectTransfer(t.id)}>Reject</button>
+                      <button className="btn green sm" onClick={() => approveTransfer(t.id)}><Check size={14} /> Approve</button>
+                      <button className="btn red sm" onClick={() => rejectTransfer(t.id)}><X size={14} /> Reject</button>
                     </div>
                   )}</td>
                 </tr>
@@ -144,7 +145,7 @@ function AllocateModal({ assets, employees, onClose, onDone }) {
         <div className="err">
           <b>Conflict:</b> {conflict.message}. {conflict.hint}
           <div style={{ marginTop: 8 }}>
-            <button className="btn blue sm" onClick={requestTransfer}>Raise Transfer Request instead</button>
+            <button className="btn blue sm" onClick={requestTransfer}><ArrowLeftRight size={14} /> Raise Transfer Request instead</button>
           </div>
         </div>
       )}
