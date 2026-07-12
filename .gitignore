@@ -1,7 +1,41 @@
-node_modules/
+# ---- Claude Code / AI assistant files (never commit) ----
+CLAUDE.md
+**/CLAUDE.md
+.claude/
+**/.claude/
+.claude*/
+.cursor/
+.aider*
+.mcp.json
+
+# ---- Python / backend ----
+venv/
+**/venv/
+env/
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+*.sqlite3
+*.db
+
+# ---- Environment / secrets ----
 .env
+**/.env
+*.env
+
+# ---- Node / frontend ----
+node_modules/
+**/node_modules/
 dist/
 build/
-__pycache__/
-*.pyc
+.vite/
+frontend/.env
+
+# ---- Editor / OS ----
 .vscode/
+.idea/
+.DS_Store
+Thumbs.db
