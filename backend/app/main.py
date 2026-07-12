@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -8,10 +9,16 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="AssetFlow API")
 
+# CORS_ORIGINS can be a comma-separated list of allowed frontend URLs
+# (e.g. https://assetflow.vercel.app). Defaults to "*" for local dev.
+# Auth is Bearer-token based, so credentials/cookies are not needed.
+_origins = os.getenv("CORS_ORIGINS", "*")
+allow_origins = ["*"] if _origins.strip() == "*" else [o.strip() for o in _origins.split(",")]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=allow_origins,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
